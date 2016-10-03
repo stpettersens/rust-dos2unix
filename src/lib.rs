@@ -35,17 +35,40 @@ impl Dos2Unix {
         dos_eol
     }
 
-    pub fn convert(filename: &str, feedback: bool, write: bool) -> bool {
+    fn to_unix_line_endings(contents: String) -> Vec<String> {
+        let mut ucontents = Vec::new();
+        for c in contents.chars() {
+            if c != '\r' {
+                ucontents.push(format!("{}", c));
+            }
+        }
+        ucontents
+    }
+
+    pub fn convert(filename: &str, feedback: bool) -> bool {
         let mut input = File::open(filename).unwrap();
         let mut contents = String::new();
         let _ = input.read_to_string(&mut contents);
-        Dos2Unix::is_ascii(contents.clone());
-        Dos2Unix::is_dos_eol(contents.clone())
+        let ascii = Dos2Unix::is_ascii(contents.clone());
+        let dos_eol = Dos2Unix::is_dos_eol(contents.clone());
+
+        let message = "dos2unix: File already has UNIX line endings or is binary.";
+        let mut success = false;
+
+        if ascii && dos_eol {
+            let converted = Dos2Unix::to_unix_line_endings(contents.clone());
+            let mut w = File::create(filename).unwrap();
+            let _ = w.write_all(converted.join("\n").as_bytes());
+            success = true;
+        } else if feedback {
+            println!("{}", message);
+        }
+        success
     }
 }
 
 #[cfg(test)]
 #[test]
 fn convert() {
-    Dos2Unix::convert("README.md", true, false);
+    Dos2Unix::convert("README.md", true);
 }
