@@ -24,11 +24,23 @@ impl Dos2Unix {
         ascii
     }
 
+    fn is_dos_eol(contents: String) -> bool {
+        let mut dos_eol = false;
+        for c in contents.chars() {
+            if c == '\r' {
+                dos_eol = true;
+                break;
+            }
+        }
+        dos_eol
+    }
+
     pub fn convert(filename: &str, feedback: bool, write: bool) -> bool {
         let mut input = File::open(filename).unwrap();
         let mut contents = String::new();
         let _ = input.read_to_string(&mut contents);
-        Dos2Unix::is_ascii(contents)
+        Dos2Unix::is_ascii(contents.clone());
+        Dos2Unix::is_dos_eol(contents.clone())
     }
 }
 
