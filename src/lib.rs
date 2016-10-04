@@ -58,7 +58,7 @@ impl Dos2Unix {
         if ascii && dos_eol {
             let converted = Dos2Unix::to_unix_line_endings(contents.clone());
             let mut w = File::create(filename).unwrap();
-            let _ = w.write_all(converted.join("\n").as_bytes());
+            let _ = w.write_all(converted.join("").as_bytes());
             success = true;
         } else if feedback {
             println!("{}", message);
