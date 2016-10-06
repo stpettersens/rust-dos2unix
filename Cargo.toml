@@ -4,14 +4,9 @@ description = "Rust library to convert DOS to Unix line endings."
 version = "0.1.0"
 authors = ["Sam Saint-Pettersen <s.stpettersen+github@gmail.com>"]
 readme = "README.md"
-respository = "https://github.com/stpettersens/rust-dos2unix"
+repository = "https://github.com/stpettersens/rust-dos2unix"
 homepage = "https://github.com/stpettersens/rust-dos2unix"
 documentation = "https://stpettersens.github.io/rust-dos2unix/doc/dos2unix"
 license = "MIT"
 keywords = ["dos", "unix", "line", "endings"]
 exclude = [".gitignore", ".travis.yml", "appveyor.yml"]
-
-[lib]
-crate_lib = ["dylib", "rlib"]
-name = "dos2unix"
-path = "src/lib.rs"
